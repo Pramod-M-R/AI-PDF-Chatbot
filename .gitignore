@@ -1,0 +1,25 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Environment
+backend/.env
+
+# Vector database
+backend/chroma_db/
+
+# Uploaded PDFs
+backend/uploads/
+
+# Node
+frontend/node_modules/
+
+# Vite
+frontend/dist/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
