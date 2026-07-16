@@ -111,6 +111,18 @@ export default function App() {
 }, []);
 
   const handleFileSelected = useCallback(async (file) => {
+    const alreadyExists = documents.some(
+  document =>
+    document.name === file.name
+);
+
+if (alreadyExists) {
+
+  alert("This PDF has already been uploaded.");
+
+  return;
+
+}
 
   try {
 
@@ -201,6 +213,19 @@ if (response.error) {
 
   const handleSend = useCallback(async (text) => {
 
+    const alreadyExists = documents.some(
+  document =>
+    document.name === file.name
+);
+
+if (alreadyExists) {
+
+  alert("This PDF has already been uploaded.");
+
+  return;
+
+}
+
     const userMessage = {
 
       id: nextId(),
@@ -280,7 +305,7 @@ if (response.error) {
 
     }
 
-  }, []);
+  }, [documents]);
 
   const activeDocument =
     documents.find(
