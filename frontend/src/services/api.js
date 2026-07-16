@@ -50,4 +50,12 @@ export const getDocuments = async () => {
 
 };
 
+// Reset knowledge base
+export const resetKnowledgeBase = async () => {
+
+  const response = await API.post("/reset");
+
+  return response.data;
+
+};
 export default API;

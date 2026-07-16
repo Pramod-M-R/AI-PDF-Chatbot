@@ -8,6 +8,7 @@ import {
   uploadPDF,
   askQuestion,
   getDocuments,
+  resetKnowledgeBase,
 } from "./services/api";
 
 import Sidebar from "./components/Sidebar";
@@ -79,34 +80,33 @@ export default function App() {
 
   useEffect(() => {
 
-  async function loadDocuments() {
+  async function initializeApp() {
 
     try {
 
+      // Clear backend knowledge base
+      await resetKnowledgeBase();
+
+      // Now load documents (should be empty)
       const docs = await getDocuments();
 
       setDocuments(docs);
 
-      if (docs.length > 0) {
+      setPdfUploaded(false);
 
-        setPdfUploaded(true);
+      setActiveDocumentId(null);
 
-        setActiveDocumentId(docs[0].id);
-
-      }
+      setMessages([]);
 
     } catch (error) {
 
-      console.error(
-        "Unable to load documents",
-        error
-      );
+      console.error("Initialization failed:", error);
 
     }
 
   }
 
-  loadDocuments();
+  initializeApp();
 
 }, []);
 

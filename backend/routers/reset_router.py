@@ -1,18 +1,29 @@
 from fastapi import APIRouter
+from pathlib import Path
 import shutil
-import os
 
 router = APIRouter()
 
-CHROMA_PATH = "chroma_db"
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+UPLOADS_PATH = BASE_DIR / "uploads"
+CHROMA_PATH = BASE_DIR / "chroma_db"
+
 
 @router.post("/reset")
 def reset_database():
 
-    if os.path.exists(CHROMA_PATH):
+    # Delete uploaded PDFs
+    if UPLOADS_PATH.exists():
+        shutil.rmtree(UPLOADS_PATH)
+
+    # Delete vector database
+    if CHROMA_PATH.exists():
         shutil.rmtree(CHROMA_PATH)
 
-    os.makedirs(CHROMA_PATH, exist_ok=True)
+    # Recreate folders
+    UPLOADS_PATH.mkdir(exist_ok=True)
+    CHROMA_PATH.mkdir(exist_ok=True)
 
     return {
         "status": "success",
