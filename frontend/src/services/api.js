@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://https://rag-chatbot-by-pramod-production.up.railway.app:8000",
+  baseURL: "https://rag-chatbot-by-pramod-production.up.railway.app",
 });
 
 // Upload PDF
