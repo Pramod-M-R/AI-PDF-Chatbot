@@ -17,11 +17,11 @@ def reset_database():
     if UPLOADS_PATH.exists():
         shutil.rmtree(UPLOADS_PATH)
 
-    # Delete vector database
+    # Delete Chroma database
     if CHROMA_PATH.exists():
         shutil.rmtree(CHROMA_PATH)
 
-    # Recreate folders
+    # Recreate empty folders
     UPLOADS_PATH.mkdir(exist_ok=True)
     CHROMA_PATH.mkdir(exist_ok=True)
 
