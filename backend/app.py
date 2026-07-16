@@ -8,7 +8,7 @@ import os
 from routers.pdf_router import router as pdf_router
 from routers.retrieval_router import router as retrieval_router
 from routers.chat_router import router as chat_router
-
+from routers.reset_router import router as reset_router
 # Load .env
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -36,6 +36,7 @@ app.add_middleware(
 app.include_router(pdf_router)
 app.include_router(retrieval_router)
 app.include_router(chat_router)
+app.include_router(reset_router)
 
 # Groq Client
 client = Groq(

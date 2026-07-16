@@ -118,20 +118,20 @@ export default function App() {
 
     const response = await uploadPDF(file);
 
-    // Backend rejected the upload
-    if (!response.success) {
+// If backend returns an error message
+if (response.error) {
 
-      alert(response.message);
+  alert(response.error);
 
-      setUploadState("idle");
+  setUploadState("idle");
 
-      return;
+  return;
 
-    }
+}
 
     const newDocument = {
 
-      id: `doc-${Date.now()}`,
+      id: file.name,
 
       name: file.name,
 
@@ -161,6 +161,7 @@ export default function App() {
     setMessages([]);
 
     setUploadState("success");
+    alert("✅ PDF uploaded successfully!");
 
     setTimeout(() => {
 
