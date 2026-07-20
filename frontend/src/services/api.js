@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://rag-chatbot-by-pramod-production.up.railway.app",
+  baseURL: "http://127.0.0.1:8000",
 });
 
 // Upload PDF
@@ -50,12 +50,4 @@ export const getDocuments = async () => {
 
 };
 
-// Reset knowledge base
-export const resetKnowledgeBase = async () => {
-
-  const response = await API.post("/reset");
-
-  return response.data;
-
-};
 export default API;

@@ -42,7 +42,12 @@ def get_documents():
 
     return documents
 
+@router.post("/clear-documents")
+def clear_documents():
+    shutil.rmtree(UPLOAD_FOLDER, ignore_errors=True)
+    UPLOAD_FOLDER.mkdir(exist_ok=True)
 
+    return {"success": True}
 # ===========================================
 # Upload PDF
 # ===========================================

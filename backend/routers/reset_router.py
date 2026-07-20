@@ -1,31 +1,41 @@
 from fastapi import APIRouter
-from pathlib import Path
 import shutil
+import os
+
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
 
 router = APIRouter()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_FOLDER = "uploads"
 
-UPLOADS_PATH = BASE_DIR / "uploads"
-CHROMA_PATH = BASE_DIR / "chroma_db"
-
+embedding_model = HuggingFaceEmbeddings(
+    model_name="BAAI/bge-base-en-v1.5"
+)
 
 @router.post("/reset")
 def reset_database():
 
-    # Delete uploaded PDFs
-    if UPLOADS_PATH.exists():
-        shutil.rmtree(UPLOADS_PATH)
+    if os.path.exists(UPLOAD_FOLDER):
+        shutil.rmtree(UPLOAD_FOLDER)
 
-    # Delete Chroma database
-    if CHROMA_PATH.exists():
-        shutil.rmtree(CHROMA_PATH)
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-    # Recreate empty folders
-    UPLOADS_PATH.mkdir(exist_ok=True)
-    CHROMA_PATH.mkdir(exist_ok=True)
+    vector_db = Chroma(
+        persist_directory="chroma_db",
+        embedding_function=embedding_model
+    )
+
+    collection = vector_db._collection
+
+    ids = collection.get()["ids"]
+
+    if ids:
+        collection.delete(ids=ids)
+
+    vector_db.persist()
 
     return {
         "status": "success",
-        "message": "Knowledge base cleared successfully."
+        "message": "Knowledge base cleared."
     }

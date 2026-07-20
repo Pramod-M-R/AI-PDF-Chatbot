@@ -16,9 +16,10 @@ def store_chunks(chunks, pdf_name):
     """
 
     vector_db = Chroma(
-        persist_directory="chroma_db",
-        embedding_function=embedding_model
-    )
+    collection_name="pdf_chatbot",
+    persist_directory="chroma_db",
+    embedding_function=embedding_model,
+)
 
     texts = []
     metadatas = []
@@ -47,6 +48,8 @@ def store_chunks(chunks, pdf_name):
         metadatas=metadatas,
         ids=ids
     )
+
+    print("Collection count:", vector_db._collection.count())
 
     vector_db.persist()
 

@@ -16,38 +16,47 @@ class ChatRequest(BaseModel):
 @router.post("/chat")
 def chat(request: ChatRequest):
 
-    # Retrieve relevant chunks
-    docs = retrieve_chunks(request.question)
+    try:
 
-    # Build context for the LLM
-    context = "\n\n".join(
-        doc.page_content
-        for doc in docs
-    )
+        # Retrieve relevant chunks
+        docs = retrieve_chunks(request.question)
 
-    print("\n========== RETRIEVED CONTEXT ==========")
-    print(context)
-    print("=======================================\n")
-
-    # Generate answer
-    answer = generate_answer(
-        question=request.question,
-        context=context
-    )
-
-    # Get unique PDF names
-    sources = list(
-        {
-            doc.metadata.get(
-                "pdf_name",
-                "Unknown PDF"
-            )
+        # Build context
+        context = "\n\n".join(
+            doc.page_content
             for doc in docs
-        }
-    )
+        )
 
-    return {
-        "question": request.question,
-        "answer": answer,
-        "sources": sources
-    }
+        print("\n========== RETRIEVED CONTEXT ==========")
+        print(context)
+        print("=======================================\n")
+
+        # Generate answer
+        answer = generate_answer(
+            question=request.question,
+            context=context
+        )
+
+        sources = list(
+            {
+                doc.metadata.get(
+                    "pdf_name",
+                    "Unknown PDF"
+                )
+                for doc in docs
+            }
+        )
+
+        return {
+            "question": request.question,
+            "answer": answer,
+            "sources": sources
+        }
+
+    except Exception as e:
+
+        import traceback
+
+        print(traceback.format_exc())
+
+        raise

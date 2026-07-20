@@ -13,9 +13,10 @@ def retrieve_chunks(question: str, k: int = 10):
     """
 
     vector_db = Chroma(
-        persist_directory="chroma_db",
-        embedding_function=embedding_model
-    )
+    collection_name="pdf_chatbot",
+    persist_directory="chroma_db",
+    embedding_function=embedding_model,
+)
 
     results = vector_db.similarity_search_with_score(
         query=question,
